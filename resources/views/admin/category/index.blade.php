@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <h4>Categories</h4>
-            <a href="" class="btn btn-primary">add new</a>
+            <a href="{{route('admin.category.create')}}" class="btn btn-primary">add new</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -20,17 +20,37 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach ($category as $category)
+
                         <tr>
                             <td>
-                                1
+                                {{$category->position}}
                             </td>
-                            <td>Demo title</td>
-                            <td>Demo title</td>
-                            <td>Demo title</td>
+                            <td>{{ $category->title }}</td>
+                            <td>{{ $category->slug }}</td>
+                            <td>
+                                @if ($category->status == true)
+                                        <span class="badge bg-success text-white">visible</span>
+                                    @else
+                                        <span class="badge bg-danger text-white">hidden</span>
+                                    @endif
+                            </td>
 
 
-                            <td><a href="#" class="btn btn-primary">Detail</a></td>
+                            <td>
+                                    <form action="{{route('admin.category.destroy', $category->id)}}" method="post">
+                                        @csrf
+                                        @method("delete")
+                                        <a href="{{ route('admin.category.edit', $category->id) }}"
+                                            class="btn btn-primary btn-sm">edit</a>
+                                        <button type="submit" class="btn btn-danger btn-sm">delete</button>
+                                    </form>
+                                </td>
                         </tr>
+
+
+                        @endforeach
+
 
                     </tbody>
                 </table>
